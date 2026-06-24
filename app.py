@@ -511,6 +511,6 @@ with right_col:
 # ── FOOTER ─────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div style="text-align:center; margin-top:3rem; padding:1.5rem; color:#334155; font-size:0.8rem; font-family:'JetBrains Mono',monospace; border-top:1px solid #1e1e30;">
-    Built with Python · ChromaDB · Groq · Streamlit &nbsp;|&nbsp; Day 7 of 7 — AI Build Series by Vaishnavi Gahoi
+    Built with Python · ChromaDB · Groq · Streamlit &nbsp;|&nbsp; AI Build Series by Vaishnavi Gahoi
 </div>
 """, unsafe_allow_html=True)
