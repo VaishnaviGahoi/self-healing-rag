@@ -293,7 +293,7 @@ with left_col:
     # ── DOCUMENT UPLOAD ────────────────────────────────────────────────────────
     st.markdown('<div class="panel-title">📄 KNOWLEDGE BASE</div>', unsafe_allow_html=True)
 
- input_tab1, input_tab2 = st.tabs(["📋 Paste Text", "📁 Upload File"])
+    input_tab1, input_tab2 = st.tabs(["📋 Paste Text", "📁 Upload File"])
     doc_input = ""
     with input_tab1:
         doc_input = st.text_area(
