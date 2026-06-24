@@ -340,7 +340,7 @@ Agentic AI refers to AI systems that can take autonomous actions to achieve goal
         st.session_state["sample_loaded"] = sample
         st.rerun()
 
-    if "sample_loaded" in st.session_state:
+    if "sample_loaded" in st.session_state and not doc_input.strip():
         doc_input = st.session_state["sample_loaded"]
 
     if st.button("🔨 Index Documents", disabled=not bool(st.session_state.groq_key)):
