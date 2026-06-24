@@ -293,8 +293,8 @@ with left_col:
     # ── DOCUMENT UPLOAD ────────────────────────────────────────────────────────
     st.markdown('<div class="panel-title">📄 KNOWLEDGE BASE</div>', unsafe_allow_html=True)
 
-  input_tab1, input_tab2 = st.tabs(["📋 Paste Text", "📁 Upload File"])
-
+ input_tab1, input_tab2 = st.tabs(["📋 Paste Text", "📁 Upload File"])
+    doc_input = ""
     with input_tab1:
         doc_input = st.text_area(
             "Paste your documents / knowledge here",
@@ -302,32 +302,20 @@ with left_col:
             placeholder="Paste any text — product docs, research notes, articles, FAQs...",
             label_visibility="collapsed"
         )
-
     with input_tab2:
-        uploaded_file = st.file_uploader(
-            "Upload a file",
-            type=["txt", "pdf"],
-            label_visibility="collapsed"
-        )
-        doc_input_file = ""
+        uploaded_file = st.file_uploader("Upload a file", type=["txt", "pdf"], label_visibility="collapsed")
         if uploaded_file:
             if uploaded_file.type == "text/plain":
-                doc_input_file = uploaded_file.read().decode("utf-8")
-                st.success(f"✅ Loaded: {uploaded_file.name} ({len(doc_input_file)} chars)")
+                doc_input = uploaded_file.read().decode("utf-8")
+                st.success(f"✅ Loaded: {uploaded_file.name} ({len(doc_input)} chars)")
             elif uploaded_file.type == "application/pdf":
                 try:
                     from pypdf import PdfReader
                     reader = PdfReader(uploaded_file)
-                    doc_input_file = "\n\n".join(
-                        page.extract_text() for page in reader.pages if page.extract_text()
-                    )
-                    st.success(f"✅ Loaded: {uploaded_file.name} ({len(reader.pages)} pages, {len(doc_input_file)} chars)")
+                    doc_input = "\n\n".join(page.extract_text() for page in reader.pages if page.extract_text())
+                    st.success(f"✅ Loaded: {uploaded_file.name} ({len(reader.pages)} pages)")
                 except Exception as e:
                     st.error(f"Could not read PDF: {e}")
-
-        if doc_input_file:
-            doc_input = doc_input_file
-
     # Sample docs button
     if st.button("📋 Load Sample Documents"):
         sample = """
