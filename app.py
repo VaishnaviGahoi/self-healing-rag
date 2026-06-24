@@ -293,12 +293,40 @@ with left_col:
     # ── DOCUMENT UPLOAD ────────────────────────────────────────────────────────
     st.markdown('<div class="panel-title">📄 KNOWLEDGE BASE</div>', unsafe_allow_html=True)
 
-    doc_input = st.text_area(
-        "Paste your documents / knowledge here",
-        height=220,
-        placeholder="Paste any text — product docs, research notes, articles, FAQs...\n\nThe RAG pipeline will index this, and when you ask a weak question, it will self-heal by re-querying with better strategies.",
-        label_visibility="collapsed"
-    )
+  input_tab1, input_tab2 = st.tabs(["📋 Paste Text", "📁 Upload File"])
+
+    with input_tab1:
+        doc_input = st.text_area(
+            "Paste your documents / knowledge here",
+            height=180,
+            placeholder="Paste any text — product docs, research notes, articles, FAQs...",
+            label_visibility="collapsed"
+        )
+
+    with input_tab2:
+        uploaded_file = st.file_uploader(
+            "Upload a file",
+            type=["txt", "pdf"],
+            label_visibility="collapsed"
+        )
+        doc_input_file = ""
+        if uploaded_file:
+            if uploaded_file.type == "text/plain":
+                doc_input_file = uploaded_file.read().decode("utf-8")
+                st.success(f"✅ Loaded: {uploaded_file.name} ({len(doc_input_file)} chars)")
+            elif uploaded_file.type == "application/pdf":
+                try:
+                    from pypdf import PdfReader
+                    reader = PdfReader(uploaded_file)
+                    doc_input_file = "\n\n".join(
+                        page.extract_text() for page in reader.pages if page.extract_text()
+                    )
+                    st.success(f"✅ Loaded: {uploaded_file.name} ({len(reader.pages)} pages, {len(doc_input_file)} chars)")
+                except Exception as e:
+                    st.error(f"Could not read PDF: {e}")
+
+        if doc_input_file:
+            doc_input = doc_input_file
 
     # Sample docs button
     if st.button("📋 Load Sample Documents"):
